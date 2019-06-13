@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+">
+
+	<!-- 配置一个自动扫描的包  -->
+	<context:component-scan base-package="com.itbull.springmvc.*" /> 
+  
+	<!-- 配置用  InternalResourceViewResolve  
+		 如果我们在目标方法返回一个 "loginOK"
+		 则真实的资源就是  prefix/名字/suffix
+		 loginOK => /WEB-INF/pages/loginOk.jsp
+	-->
+	<bean 
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/pages/"/>
+		<property name="suffix" value=".jsp"/>
+	</bean>
+	
+	<!-- 配置可以解析自定义的视图的解析器 
+		1. BeanNameViewResolver 这个就是可以解析自定义视图的解析器
+		2. name="order" ：表示给这个解析器设置优先级, 默认优先级很低 值 Integer.MAX_VALUE
+		3. 一般来说明，我们自己的视图解析优先级高，Order值越小，优先级越高
+	-->
+	<bean  class="org.springframework.web.servlet.view.BeanNameViewResolver">
+		<property name="order" value="99"></property>
+	</bean>
+	 
+	<!-- 加入两个常规配置，才会加载 .js .css 文件 --> 
+	<mvc:default-servlet-handler/>
+	<mvc:annotation-driven/>
+</beans>
